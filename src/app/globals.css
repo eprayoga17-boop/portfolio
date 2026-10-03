@@ -1,0 +1,272 @@
+@import "tailwindcss";
+
+/* -------------------------------------------------------------------------
+   Brand tokens (from Erik's 2025 portfolio)
+   cobalt  #0039C1  structure, primary actions, headings
+   orange  #F27600  highlight only: script, tags, hover fills. Never small text.
+   peach   #FF9E83  avatar skin tone, used for soft accents
+   paper   #EEF2FF  the lavender page colour from the PDF
+   ink     #141A33  derived from the PDF navy #1D2847, darkened for body text
+   ------------------------------------------------------------------------- */
+:root {
+  --paper: #eef2ff;
+  --surface: #f8f9ff;
+  --surface-2: #dfe5fb;
+  --ink: #141a33;
+  --muted: #4a5375;
+  --line: rgb(20 26 51 / 0.14);
+  --cobalt: #0039c1;
+  --cobalt-text: #0039c1;
+  --cobalt-deep: #1b3bb8;
+  --orange: #f27600;
+  /* Orange for large text on paper: #F27600 is 2.5:1 there, this is 3.4:1 (AA large). */
+  --orange-text: #d45f00;
+  --peach: #ff9e83;
+  --on-cobalt: #eef2ff;
+  --on-orange: #141a33;
+  --halftone: rgb(0 57 193 / 0.16);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #0a0e1f;
+  --surface: #11172e;
+  --surface-2: #1a2244;
+  --ink: #eef2ff;
+  --muted: #a3abcb;
+  --line: rgb(238 242 255 / 0.14);
+  --cobalt: #1f4fe0;
+  --cobalt-text: #8aa4ff;
+  --cobalt-deep: #0039c1;
+  --orange: #ff8a1f;
+  --orange-text: #ff8a1f;
+  --peach: #ffae97;
+  --on-cobalt: #f8f9ff;
+  --on-orange: #0a0e1f;
+  --halftone: rgb(138 164 255 / 0.14);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-cobalt: var(--cobalt);
+  --color-cobalt-text: var(--cobalt-text);
+  --color-cobalt-deep: var(--cobalt-deep);
+  --color-orange: var(--orange);
+  --color-orange-text: var(--orange-text);
+  --color-peach: var(--peach);
+  --color-on-cobalt: var(--on-cobalt);
+  --color-on-orange: var(--on-orange);
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
+  --font-script: var(--font-script-face), cursive;
+
+  --ease-snap: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* z-index scale: content 0, header 40, menu 50, transition 80, loader 90, grain 100 */
+
+html {
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-stretch: 100%;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: var(--orange);
+  color: var(--on-orange);
+}
+
+:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer components {
+/* ---------- Display type: wide, heavy italic, like the PORTFOLIO cover ---------- */
+.display {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  font-style: italic;
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.display-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px currentColor;
+}
+.script {
+  font-family: var(--font-script);
+  font-weight: 700;
+  line-height: 1;
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---------- Shape system: everything interactive is chamfered (ZZZ UI) ---------- */
+.chamfer {
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+}
+.chamfer-lg {
+  clip-path: polygon(28px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%, 0 28px);
+}
+
+/* ---------- Textures ---------- */
+.halftone {
+  background-image: radial-gradient(var(--halftone) 1.4px, transparent 1.6px);
+  background-size: 10px 10px;
+}
+.stripes {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--orange) 0 14px,
+    var(--cobalt) 14px 28px
+  );
+}
+
+/* Ribbon tags from the cover ("BERKARYA / UNTUK BERCANDA") */
+.ribbon {
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.35em 1.1em;
+  border-radius: 999px;
+  line-height: 1.1;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0 1.4rem;
+  font-weight: 800;
+  font-stretch: 112%;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition:
+    transform 0.25s var(--ease-snap),
+    background-color 0.25s var(--ease-snap),
+    color 0.25s var(--ease-snap);
+}
+.btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+.btn-primary {
+  background: var(--cobalt);
+  color: var(--on-cobalt);
+}
+.btn-primary:hover {
+  background: var(--orange);
+  color: var(--on-orange);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--ink);
+}
+.btn-ghost:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+}
+
+/* Boot loader: hidden unless the inline boot script opts in. */
+.boot {
+  display: none;
+}
+html[data-boot="1"] .boot {
+  display: flex;
+}
+html[data-boot="1"] body {
+  overflow: hidden;
+}
+/* Fail-safe: if JS dies mid-boot, never trap the visitor behind the loader. */
+@keyframes boot-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+html[data-boot="1"] .boot {
+  animation: boot-failsafe 0.3s 5s forwards;
+}
+
+/* Grain overlay: fixed, non-interactive, never on a scrolling element */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Marquee (CSS-driven so it costs nothing on the main thread) */
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  animation: marquee 48s linear infinite;
+}
+
+/* Elements GSAP will reveal start hidden only when motion is allowed and JS runs. */
+html.js [data-reveal],
+html.js [data-intro] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js [data-reveal],
+  html.js [data-intro] {
+    opacity: 1 !important;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+}
